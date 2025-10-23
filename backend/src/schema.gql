@@ -1,0 +1,29 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+input CreateTodoDto {
+  completed: Boolean! = false
+  description: String
+  title: String!
+}
+
+type Mutation {
+  createTodo(input: CreateTodoDto!): Todo!
+}
+
+type Query {
+  listTodos(search: String, skip: Int, take: Int): TodoPagination!
+}
+
+type Todo {
+  completed: Boolean!
+  description: String
+  id: ID!
+  title: String!
+}
+
+type TodoPagination {
+  todos: [Todo!]!
+  total: Int!
+}
