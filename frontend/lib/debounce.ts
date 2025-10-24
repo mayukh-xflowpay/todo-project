@@ -4,9 +4,7 @@ export const debounce = (callback: Function, wait: number) => {
     window.clearTimeout(timerID);
 
     timerID = window.setTimeout(() => {
-      console.log(...args);
       callback.apply(this, args);
-      // callback(args);
     }, wait);
   };
 };

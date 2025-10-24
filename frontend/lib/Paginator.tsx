@@ -60,7 +60,7 @@ export default function Paginator({
             className={clsx(
               "flex items-center justify-center w-10 h-10 rounded-md transition-colors duration-300",
               {
-                "bg-indigo-600 text-white": currentPage === i,
+                "bg-blue-500 text-white": currentPage === i,
                 "bg-white text-gray-700 hover:bg-indigo-100": currentPage !== i,
               }
             )}

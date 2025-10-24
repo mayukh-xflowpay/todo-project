@@ -20,7 +20,8 @@ export class TodosService {
   ): Promise<TodoPagination> {
     const query = this.todosRepository.createQueryBuilder('todo');
 
-    if (search) query.where('LOWER(todo.title) LIKE :search%', { search: `` });
+    if (search)
+      query.where('LOWER(todo.title) LIKE :search', { search: `${search}%` });
 
     const total = await query.getCount();
 
