@@ -5,23 +5,32 @@ import { Todo } from './entities/todos.entity';
 import { CreateTodoDto } from './dtos/createTodo.dto';
 import { UpdateTodoDto } from './dtos/updateTodo.dto';
 import { TodoPagination } from './models/todoPagination.models';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class TodosService {
   constructor(
     @InjectRepository(Todo)
     private todosRepository: Repository<Todo>,
+
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
   ) {}
 
   async findAll(
+    user: { userId: number; email: string },
     skip?: number,
     take?: number,
     search?: string,
   ): Promise<TodoPagination> {
-    const query = this.todosRepository.createQueryBuilder('todo');
+    const query = this.todosRepository
+      .createQueryBuilder('todo')
+      .where('user_id = :id', { id: user.userId });
 
     if (search)
-      query.where('LOWER(todo.title) LIKE :search', { search: `${search}%` });
+      query.andWhere('LOWER(todo.title) LIKE :search', {
+        search: `${search.toLowerCase()}%`,
+      });
 
     const total = await query.getCount();
 
@@ -50,8 +59,17 @@ export class TodosService {
     return res;
   }
 
-  async create(createTodoDto: CreateTodoDto): Promise<Todo> {
-    const newTodo = this.todosRepository.create(createTodoDto);
+  async create(
+    userPayload: { userId: number; email: string },
+    createTodoDto: CreateTodoDto,
+  ): Promise<Todo> {
+    const user = await this.userRepository.findOneBy({
+      id: userPayload.userId,
+    });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const newTodo = this.todosRepository.create({ ...createTodoDto, user });
     await this.todosRepository.save(newTodo);
     return newTodo;
   }

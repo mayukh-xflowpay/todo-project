@@ -8,8 +8,9 @@ export default function Home() {
           Welcome Back!
         </h1>
         <p className="text-gray-600 mb-6">
-          Organize your day efficiently with TodoApp — track your tasks, stay on
-          schedule, and get things done effortlessly.
+          Organize your day efficiently with TodoApp
+          <br />
+          Track your tasks, stay on schedule, and get things done effortlessly.
         </p>
 
         <Link
@@ -19,12 +20,6 @@ export default function Home() {
           Go to Todos
         </Link>
       </div>
-
-      <p className="text-sm text-gray-500 mt-8">
-        Powered by{" "}
-        <span className="text-blue-500 font-semibold">Nest.js, Next.js</span>{" "}
-        and <span className="text-indigo-500 font-semibold">Tailwind CSS</span>
-      </p>
     </main>
   );
 }

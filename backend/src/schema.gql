@@ -21,9 +21,16 @@ type Todo {
   description: String
   id: ID!
   title: String!
+  user: UserModel!
 }
 
 type TodoPagination {
   todos: [Todo!]!
   total: Int!
+}
+
+type UserModel {
+  email: String!
+  id: ID!
+  name: String!
 }

@@ -2,17 +2,19 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { FormTodo } from "./interfacesAndTypes/formData.type";
 import Link from "next/link";
+import { useState } from "react";
+import { enqueueSnackbar } from "notistack";
 
 interface FormProps {
-  mutateAsync: (data: FormTodo) => Promise<any>;
-  isPending: boolean;
+  handleMutate: (data: FormTodo) => Promise<any>;
+  // isPending: boolean;
   defaultData?: FormTodo;
   mode?: "create" | "edit";
 }
 
 export default function Form({
-  mutateAsync,
-  isPending,
+  handleMutate,
+  // isPending,
   defaultData,
   mode = "create",
 }: FormProps) {
@@ -25,8 +27,25 @@ export default function Form({
     mode: "onBlur",
   });
 
+  const [isPending, setIsPending] = useState(false);
+
   const onSubmit: SubmitHandler<FormTodo> = async (data) => {
-    await mutateAsync(data);
+    try {
+      setIsPending(true);
+      await handleMutate(data);
+      enqueueSnackbar(
+        mode === "edit"
+          ? "Todo updated successfully!"
+          : "Todo created successfully!",
+        { variant: "success" }
+      );
+    } catch (err) {
+      enqueueSnackbar("Something went wrong. Please try again.", {
+        variant: "error",
+      });
+    } finally {
+      setIsPending(false);
+    }
   };
 
   return (

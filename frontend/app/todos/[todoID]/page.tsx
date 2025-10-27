@@ -1,23 +1,30 @@
-"use client";
 import React from "react";
-import Link from "next/link";
-import { getTodoByID } from "@/lib/getTodoByID";
-import { useParams } from "next/navigation";
+import { fetchTodo } from "@/lib/getTodoByID";
+import { redirect } from "next/navigation";
 import { FaArrowLeft } from "react-icons/fa";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
+import LinkComponent from "@/lib/LinkComponent";
 
-export default function ViewTodo() {
-  const params = useParams();
-  const todoID = params.todoID as string;
+export default async function ViewTodo({
+  params,
+}: {
+  params: Promise<{ todoID: string }>;
+}) {
+  const session = await getServerSession(authOptions);
+  // const params = useParams();
+  const { todoID } = await params;
+  if (!session) redirect("/login");
 
-  const { isPending, isError, data, error } = getTodoByID(todoID);
+  const data = await fetchTodo(todoID, session);
 
-  if (isPending) return <p className="text-center mt-10">Loading...</p>;
-  if (isError)
-    return (
-      <p className="text-center mt-10 text-red-600">
-        Error occurred: {error?.message ?? "Unknown error"}
-      </p>
-    );
+  // if (isPending) return <p className="text-center mt-10">Loading...</p>;
+  // if (isError)
+  //   return (
+  //     <p className="text-center mt-10 text-red-600">
+  //       Error occurred: {error?.message ?? "Unknown error"}
+  //     </p>
+  //   );
 
   const createdAt = new Date(data.createdAt).toLocaleString("en-US", {
     dateStyle: "medium",
@@ -31,12 +38,12 @@ export default function ViewTodo() {
 
   return (
     <div className="max-w-3xl mx-auto mt-10">
-      <Link
+      <LinkComponent
         href="/todos"
         className="text-blue-600 hover:underline flex items-center gap-2 mb-6"
       >
         <FaArrowLeft size={14} /> Back to Todos
-      </Link>
+      </LinkComponent>
 
       <div className="bg-white rounded-xl p-8 shadow-sm border border-gray-200 relative">
         <div className="flex justify-between items-start mb-4">
@@ -44,12 +51,12 @@ export default function ViewTodo() {
             {data.title}
           </h1>
 
-          <Link
+          <LinkComponent
             href={`/todos/${todoID}/edit`}
             className="bg-blue-500 text-white text-sm px-4 py-2 rounded-md hover:bg-blue-600"
           >
             Edit
-          </Link>
+          </LinkComponent>
         </div>
 
         <span

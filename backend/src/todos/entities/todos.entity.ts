@@ -1,14 +1,22 @@
-// Create Todo entity with TypeORM decorators: id (PrimaryGeneratedColumn), title (Column), description (Column, nullable), completed (Column, default false), createdAt (CreateDateColumn), updatedAt (UpdateDateColumn)
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { User } from 'src/users/entities/user.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 
 @Entity()
 export class Todo {
   @PrimaryGeneratedColumn()
   id: number;
-  
+
   @Column()
   title: string;
-  
+
   @Column({ nullable: true })
   description: string;
 
@@ -20,4 +28,11 @@ export class Todo {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToOne(() => User, (user) => user.todos, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'user_id' })
+  user: User;
 }
