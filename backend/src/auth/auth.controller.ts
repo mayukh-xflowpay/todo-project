@@ -48,4 +48,10 @@ export class AuthController {
   ) {
     return this.authService.oauthLogin(body);
   }
+
+  @Public()
+  @Post('refresh')
+  async refresh(@Body('refresh_token') refresh_token: string) {
+    return this.authService.refresh(refresh_token);
+  }
 }

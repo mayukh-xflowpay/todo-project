@@ -23,7 +23,8 @@ export class AuthService {
   async login(user: any) {
     const payload = { sub: user.id, email: user.email };
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload, { expiresIn: '1d' }),
+      refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }),
       user,
     };
   }
@@ -37,7 +38,8 @@ export class AuthService {
     );
     const payload = { sub: user.id, email: user.email };
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload, { expiresIn: '1d' }),
+      refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }),
       user,
     };
   }
@@ -62,8 +64,26 @@ export class AuthService {
 
     const payload = { sub: user.id, email: user.email };
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload, { expiresIn: '1d' }),
+      refresh_token: this.jwtService.sign(payload, { expiresIn: '7d' }),
       user,
     };
+  }
+
+  async refresh(refreshToken: string) {
+    try {
+      const decoded = this.jwtService.verify(refreshToken);
+      const user = await this.usersService.findByID(decoded.sub);
+
+      if (!user) throw new Error('Invalid Token');
+
+      const newAccessToken = this.jwtService.sign(
+        { sub: user.id, email: user.email },
+        { expiresIn: '1d' },
+      );
+      return { access_token: newAccessToken };
+    } catch {
+      throw new UnauthorizedException();
+    }
   }
 }

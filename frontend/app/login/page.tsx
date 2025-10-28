@@ -43,20 +43,38 @@ export default function LoginPage() {
         />
         <button
           type="submit"
-          className="bg-blue-600 text-white rounded p-2 hover:bg-blue-700"
+          className="bg-blue-600 text-white rounded p-2 border-2 border-gray-700 hover:bg-blue-700"
         >
           Login with Credentials
         </button>
       </form>
 
-      <button
-        onClick={() => signIn("github", { callbackUrl: "/todos" })}
-        className="bg-gray-800 text-white p-2 rounded"
-      >
-        Login with GitHub
-      </button>
+      <hr className="w-96 font-light text-gray-300" />
 
-      <button onClick={() => router.push("/register")}>Register</button>
+      <div className="flex flex-col gap-3 md:flex-row">
+        <button
+          onClick={() => signIn("github", { callbackUrl: "/todos" })}
+          className="bg-green-600 text-white p-2 rounded border-2 border-gray-700"
+        >
+          Login with GitHub
+        </button>
+
+        <button
+          onClick={() => signIn("google", { callbackUrl: "/todos" })}
+          className="bg-green-600 text-white p-2 rounded border-2 border-gray-700"
+        >
+          Login with Google
+        </button>
+      </div>
+
+      <hr className="w-96 font-light text-gray-300" />
+
+      <button
+        className="bg-blue-600 text-white p-2 rounded w-72 border-2 border-gray-700"
+        onClick={() => router.push("/register")}
+      >
+        Register
+      </button>
     </div>
   );
 }

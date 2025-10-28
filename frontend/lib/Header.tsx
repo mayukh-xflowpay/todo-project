@@ -9,7 +9,7 @@ export default function Header() {
   const router = useRouter();
 
   return (
-    <header className="flex flex-row items-center justify-between border-b py-5 w-full mb-3 border-gray-400">
+    <header className="flex flex-row items-center justify-between border-b py-5 w-full border-gray-400">
       <h2 className="font-bold text-blue-500 ml-5 text-xl">TodoApp</h2>
 
       <div className="flex flex-row items-center gap-5 mr-5">
