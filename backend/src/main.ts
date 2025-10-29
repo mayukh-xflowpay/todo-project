@@ -7,7 +7,7 @@ async function bootstrap() {
     logger: ['error', 'warn', 'log', 'debug', 'verbose'] as LogLevel[],
   });
   app.enableCors({
-    origin: ['http://localhost:3001'],
+    origin: [process.env.FRONTEND_URL],
     credentials: true,
   });
   await app.listen(3000);

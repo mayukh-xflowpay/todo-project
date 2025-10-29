@@ -3,7 +3,7 @@ import { Session } from "next-auth";
 
 export async function fetchTodo(todoID: string, session: Session) {
   // console.log(session);
-  const res = await fetch("http://localhost:3000/todos/" + todoID, {
+  const res = await fetch(`${process.env.BACKEND_URL}/todos/` + todoID, {
     cache: "no-store",
     headers: {
       Authorization: `Bearer ${session.user.accessToken}`,

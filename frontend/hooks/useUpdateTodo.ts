@@ -7,7 +7,7 @@ import { Session } from "next-auth";
 export default function useUpdateTodo(session: Session, todoID: string) {
   const handleMutate = async (formValues: any) => {
     "use server";
-    const res = await fetch(`http://localhost:3000/todos/${todoID}`, {
+    const res = await fetch(`${process.env.BACKEND_URL}/todos/${todoID}`, {
       method: "PUT",
       body: JSON.stringify(formValues),
       headers: {

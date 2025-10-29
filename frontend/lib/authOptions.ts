@@ -13,7 +13,7 @@ export const authOptions: AuthOptions = {
       },
       async authorize(credentials) {
         // console.log("Authorize credentials:", credentials);
-        const res = await fetch("http://localhost:3000/auth/login", {
+        const res = await fetch(`${process.env.BACKEND_URL}/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -61,7 +61,7 @@ export const authOptions: AuthOptions = {
 
       if (account?.provider === "google" || account?.provider === "github") {
         const providerAccessToken = account.access_token;
-        const res = await fetch("http://localhost:3000/auth/oauth", {
+        const res = await fetch(`${process.env.BACKEND_URL}/auth/oauth`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -101,7 +101,7 @@ export const authOptions: AuthOptions = {
 
 async function refreshAccessToken(token: any) {
   try {
-    const res = await fetch("http://localhost:3000/auth/refresh", {
+    const res = await fetch(`${process.env.BACKEND_URL}/auth/refresh`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ refresh_token: token.refreshToken }),
